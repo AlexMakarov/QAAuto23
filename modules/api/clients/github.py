@@ -18,3 +18,22 @@ class GitHub:
         body = r.json()
 
         return body
+    
+    def get_emoji(self, name):
+        r = requests.get('https://api.github.com/emojis', name)
+        body = r.json
+
+        return body
+    
+    def get_gists(self, gist_id):
+        r = requests.get('https://api.github.com/gists/GIST_ID', gist_id)
+        body = r.json
+
+        return body
+
+
+    def get_events(self, accept):
+        r = requests.get('https://api.github.com/events', accept)
+        body = r.json
+
+        return body
