@@ -6,6 +6,7 @@ class Database():
     def __init__(self):
         self.connection = sqlite3.connect(r'C:\\Users\\Alexandr\\desktop\\work\\QAAuto23' + r'\\become_qa_auto.db')
         self.cursor = self.connection.cursor()
+    
 
     def test_connection(self):
         sqlite_select_Query = "SELECT sqlite_version();"
@@ -58,3 +59,38 @@ class Database():
         self.cursor.execute(query)
         record = self.cursor.fetchall()
         return record
+    
+
+    
+    def insert_customer(self, customer_id, name, address, city, postalCode, country):
+        query = f"INSERT OR REPLACE INTO customers (id, name, address, city, postalCode, country) \
+            VALUES ({customer_id}, '{name}', '{address}', '{city}', '{postalCode}','{country}')"
+        self.cursor.execute(query)
+        self.connection.commit()
+
+    def get_postalcode(self):
+        query = f"SELECT postalCode FROM customers "
+        self.cursor.execute(query)
+        record = self.cursor.fetchall()
+        return record
+    
+    
+    def create_table(self):
+        self.cursor.execute("DROP TABLE customers2")
+        self.cursor.execute("CREATE TABLE IF NOT EXISTS customers2 (id INTEGER PRIMARY KEY, name TEXT, address TEXT, city TEXT, postalCode TEXT, country TEXT)")
+        query = ("INSERT INTO customers2 (id, name, address, city, postalCode, country) VALUES(1, 'Artem', 'Bethovena Str 5', 'Kyiv', '3030', 'Ukraine')")
+        self.cursor.execute(query)
+          
+        self.cursor.execute("INSERT INTO customers2 VALUES(2, 'Anna', 'Savchenko Str 6', 'Dnipro', '5040', 'Ukraine')")
+    
+        self.connection.commit()
+    
+
+    def union_tables(self, city):
+        query = f"SELECT * FROM customers WHERE city = '{city}' UNION SELECT * FROM customers2 WHERE city = '{city}' "
+        
+        self.cursor.execute(query)
+        record = self.cursor.fetchall()
+        return record
+    
+

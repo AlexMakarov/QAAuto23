@@ -66,3 +66,50 @@ def test_detailed_orders():
     assert orders[0][1] == 'Sergii'
     assert orders[0][2] == 'солодка вода'
     assert orders[0][3] == 'з цукром'
+
+
+@pytest.mark.database
+def test_customer_insert():
+    db = Database()
+    db.insert_customer(3, 'Andrii', 'Shevchenko str 3', 'Kyiv', '3020', 'Ukraine')
+    db.insert_customer(4, 'Alex', 'Mira str 4', 'Dnipro', '4030', 'Ukraine')
+    users = db.get_all_users()
+
+    assert len(users) == 4
+    assert users[0][0] != users[1][0] != users[2][0] != users[3][0]
+    assert users[0][1] != users[1][1] != users[2][1] != users[3][1]
+    
+
+
+@pytest.mark.database
+def test_postalcode():
+    db = Database()
+    user = db.get_postalcode()
+    print(user)
+    assert user[0][0] > '0'
+    assert user[1][0] > '0'
+    assert user[2][0] > '0'
+    assert user[3][0] > '0'
+
+
+@pytest.mark.database
+def test_table():
+    db = Database()
+    db.create_table()
+
+
+
+
+@pytest.mark.database
+def test_union():
+    db = Database()
+    users = db.union_tables('Kyiv')
+    print(users)
+    assert len(users) == 4
+
+
+    
+
+
+    
+    
